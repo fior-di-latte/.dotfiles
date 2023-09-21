@@ -1,0 +1,153 @@
+" options and mappings that are supported by both Vim and IdeaVim
+:let mapleader = "\<Space>"
+set nu
+set relativenumber
+set surround
+set nerdtree
+
+set clipboard=unnamedplus
+
+"Switch between buffers"
+nnoremap <leader><leader> <C-6>
+
+set scrolloff=15 " Keep 3 lines below and above the cursor
+
+" Paste in selection mode while keeping the register intact
+xnoremap p pgvy
+
+inoremap jf <esc>
+" For deleting a widget from within braces '()'
+nnoremap <leader>w f(v%oB
+" For changing it
+nnoremap <leader>e f(v%oBc
+
+" Duplicate selection
+vmap <leader>d y'>o<C-R>0<Esc>
+
+"For changing keyword argument in dart
+nnoremap <leader>k _f:llv/,<cr>c
+
+"New line from normal mode"
+nnoremap <Leader>o o<Esc>0"_D
+nnoremap <Leader>O O<Esc>0"_D
+
+"This mapping makes macros even easier to remember: hit qq to record, q to stop recording, and Q to apply.
+nnoremap Q @q
+vnoremap Q :norm @q<cr>
+
+" Center after vertical movement
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+
+
+nnoremap <silent> J :<C-U>exec "exec 'norm m`' \| move +" . (0+v:count1)<CR>==``
+nnoremap <silent> K :<C-U>exec "exec 'norm m`' \| move -" . (1+v:count1)<CR>==``
+xnoremap <silent> J :<C-U>exec "'<,'>move '>+" . (0+v:count1)<CR>gv=gv
+xnoremap <silent> K :<C-U>exec "'<,'>move '<-" . (1+v:count1)<CR>gv=gv
+
+"Delete till next ;
+nnoremap <leader>; WBv/;<cr>
+
+" gi already moves to "last place you exited insert mode", so we'll map gI to
+" something similar: move to last change
+nnoremap gI `.
+
+"system clipboard access
+noremap <leader>y "+y
+noremap <leader>p "+p
+
+
+
+" Next and Last {{{
+
+" Motion for "next/last object".  "Last" here means "previous", not "final".
+" Unfortunately the "p" motion was already taken for paragraphs.
+"
+" Next acts on the next object of the given type in the current line, last acts
+" on the previous object of the given type in the current line.
+"
+" Currently only works for (, [, {, b, r, B, ', and ".
+"
+" Some examples (C marks cursor positions, V means visually selected):
+"
+" din'  -> delete in next single quotes                foo = bar('spam')
+"                                                      C
+"                                                      foo = bar('')
+"                                                                C
+"
+" canb  -> change around next parens                   foo = bar('spam')
+"                                                      C
+"                                                      foo = bar
+"                                                               C
+"
+" vil"  -> select inside last double quotes            print "hello ", name
+"                                                                        C
+"                                                      print "hello ", name
+"                                                             VVVVVV
+
+onoremap an :<c-u>call <SID>NextTextObject('a', 'f')<cr>
+xnoremap an :<c-u>call <SID>NextTextObject('a', 'f')<cr>
+onoremap in :<c-u>call <SID>NextTextObject('i', 'f')<cr>
+xnoremap in :<c-u>call <SID>NextTextObject('i', 'f')<cr>
+
+onoremap al :<c-u>call <SID>NextTextObject('a', 'F')<cr>
+xnoremap al :<c-u>call <SID>NextTextObject('a', 'F')<cr>
+onoremap il :<c-u>call <SID>NextTextObject('i', 'F')<cr>
+xnoremap il :<c-u>call <SID>NextTextObject('i', 'F')<cr>
+
+function! s:NextTextObject(motion, dir)
+  let c = nr2char(getchar())
+
+  if c ==# "b"
+      let c = "("
+  elseif c ==# "B"
+      let c = "{"
+  elseif c ==# "r"
+      let c = "["
+  endif
+
+  exe "normal! ".a:dir.c."v".a:motion.c
+endfunction
+
+" }}}
+
+
+" Redirect all delete-operations to black-hole
+" Use 'm' ("move") for all cut-operations
+nnoremap d "_d
+nnoremap da "_da
+nnoremap dd "_dd
+nnoremap di "_di
+nnoremap m d
+nnoremap x "_x
+nnoremap c "_c
+nnoremap X "_X
+
+xnoremap <leader>p "_dP
+
+if has('ide')
+  " mappings and options that exist only in IdeaVim
+  nnoremap yim j:action MethodUp<cr>f{vi{y
+  nnoremap dim j:action MethodUp<cr>f{vi{d
+  nnoremap cim j:action MethodUp<cr>f{vi{c
+  nnoremap yam j:action MethodUp<cr>v0Of{%y
+  nnoremap dam j:action MethodUp<cr>v0Of{%d
+  nnoremap cam j:action MethodUp<cr>v0Of{%c
+  map <leader>f <Action>(GotoFile)
+  map <leader>g <Action>(FindInPath)
+  map <leader>b <Action>(Switcher)
+  map <leader>t <Action>(GotoNextError)
+
+  if &ide =~? 'intellij idea'
+    if &ide =~? 'community'
+      " some mappings and options for IntelliJ IDEA Community Edition
+    elseif &ide =~? 'ultimate'
+      " some mappings and options for IntelliJ IDEA Ultimate Edition
+    endif
+  elseif &ide =~? 'pycharm'
+    " PyCharm specific mappings and options
+  endif
+else
+  " some mappings for Vim/Neovim
+  nnoremap <leader>f <cmd>Telescope find_files<cr>
+endif
