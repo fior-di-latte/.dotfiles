@@ -4,12 +4,13 @@ set nu
 set relativenumber
 set surround
 set nerdtree
+" :set showmode
 
 set clipboard=unnamedplus
+" set incsearch
 
 "Switch between buffers"
 nnoremap <leader><leader> <C-6>
-
 set scrolloff=15 " Keep 3 lines below and above the cursor
 
 " Paste in selection mode while keeping the register intact
@@ -18,11 +19,13 @@ xnoremap p pgvy
 inoremap jf <esc>
 " For deleting a widget from within braces '()'
 nnoremap <leader>w f(v%oB
-" For changing it
-nnoremap <leader>e f(v%oBc
 
 " Duplicate selection
 vmap <leader>d y'>o<C-R>0<Esc>
+
+" Open Terminal
+nmap <Leader>r :action ActivateTerminalToolWindow<CR>
+nmap <Leader>h :action ShowHoverInfo<CR>
 
 "For changing keyword argument in dart
 nnoremap <leader>k _f:llv/,<cr>c
@@ -52,9 +55,12 @@ nnoremap <leader>; WBv/;<cr>
 " something similar: move to last change
 nnoremap gI `.
 
+" Select all"
+nnoremap <leader>a V$%o_
+
 "system clipboard access
-noremap <leader>y "+y
-noremap <leader>p "+p
+" noremap <leader>y "+y
+" noremap <leader>p "+p
 
 
 
@@ -62,7 +68,7 @@ noremap <leader>p "+p
 
 " Motion for "next/last object".  "Last" here means "previous", not "final".
 " Unfortunately the "p" motion was already taken for paragraphs.
-"
+"RESOLVE TRICLIMATE
 " Next acts on the next object of the given type in the current line, last acts
 " on the previous object of the given type in the current line.
 "
@@ -85,29 +91,29 @@ noremap <leader>p "+p
 "                                                      print "hello ", name
 "                                                             VVVVVV
 
-onoremap an :<c-u>call <SID>NextTextObject('a', 'f')<cr>
-xnoremap an :<c-u>call <SID>NextTextObject('a', 'f')<cr>
-onoremap in :<c-u>call <SID>NextTextObject('i', 'f')<cr>
-xnoremap in :<c-u>call <SID>NextTextObject('i', 'f')<cr>
-
-onoremap al :<c-u>call <SID>NextTextObject('a', 'F')<cr>
-xnoremap al :<c-u>call <SID>NextTextObject('a', 'F')<cr>
-onoremap il :<c-u>call <SID>NextTextObject('i', 'F')<cr>
-xnoremap il :<c-u>call <SID>NextTextObject('i', 'F')<cr>
-
-function! s:NextTextObject(motion, dir)
-  let c = nr2char(getchar())
-
-  if c ==# "b"
-      let c = "("
-  elseif c ==# "B"
-      let c = "{"
-  elseif c ==# "r"
-      let c = "["
-  endif
-
-  exe "normal! ".a:dir.c."v".a:motion.c
-endfunction
+" onoremap an :<c-u>call <SID>NextTextObject('a', 'f')<cr>
+" xnoremap an :<c-u>call <SID>NextTextObject('a', 'f')<cr>
+" onoremap in :<c-u>call <SID>NextTextObject('i', 'f')<cr>
+" xnoremap in :<c-u>call <SID>NextTextObject('i', 'f')<cr>
+" "
+" onoremap al :<c-u>call <SID>NextTextObject('a', 'F')<cr>
+" xnoremap al :<c-u>call <SID>NextTextObject('a', 'F')<cr>
+" onoremap il :<c-u>call <SID>NextTextObject('i', 'F')<cr>
+" xnoremap il :<c-u>call <SID>NextTextObject('i', 'F')<cr>
+" "
+" function! s:NextTextObject(motion, dir)
+" "  let c = nr2char(getchar())
+" "
+" "  if c ==# "b"
+" "      let c = "("
+" "  elseif c ==# "B"
+" "      let c = "{"
+" "  elseif c ==# "r"
+" "      let c = "["
+" "  endif
+" "
+" "  exe "normal! ".a:dir.c."v".a:motion.c
+" endfunction
 
 " }}}
 
@@ -123,7 +129,8 @@ nnoremap x "_x
 nnoremap c "_c
 nnoremap X "_X
 
-xnoremap <leader>p "_dP
+" This is the regular behavior of vim: the selected value that gets replaced is put into the register
+xnoremap <leader>p p
 
 if has('ide')
   " mappings and options that exist only in IdeaVim
@@ -137,6 +144,10 @@ if has('ide')
   map <leader>g <Action>(FindInPath)
   map <leader>b <Action>(Switcher)
   map <leader>t <Action>(GotoNextError)
+  map <leader>s <Action>(SelectInProjectView)
+  map <leader>n <Action>(RenameFile)
+  map <leader>e <Action>(RenameElement)
+  map <leader>m <Action>(ToggleDistractionFreeMode)
 
   if &ide =~? 'intellij idea'
     if &ide =~? 'community'
