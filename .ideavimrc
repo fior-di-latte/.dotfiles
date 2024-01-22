@@ -17,6 +17,7 @@ set scrolloff=15 " Keep 3 lines below and above the cursor
 xnoremap p pgvy
 
 inoremap jf <esc>
+inoremap fj <esc>
 " For deleting a widget from within braces '()'
 nnoremap <leader>w f(v%oB
 
