@@ -149,6 +149,8 @@ if has('ide')
   map <leader>n <Action>(RenameFile)
   map <leader>e <Action>(RenameElement)
   map <leader>m <Action>(ToggleDistractionFreeMode)
+  map <leader>l <Action>(MoveTabRight)
+  map <leader>h <Action>(MoveTabLeft)
 
   if &ide =~? 'intellij idea'
     if &ide =~? 'community'
