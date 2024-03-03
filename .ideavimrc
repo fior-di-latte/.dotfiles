@@ -9,6 +9,7 @@ set nerdtree
 set clipboard=unnamedplus
 " set incsearch
 
+set highlightedyank
 "Switch between buffers"
 nnoremap <leader><leader> <C-6>
 set scrolloff=15 " Keep 3 lines below and above the cursor
@@ -129,6 +130,9 @@ nnoremap m d
 nnoremap x "_x
 nnoremap c "_c
 nnoremap X "_X
+nnoremap C "_C
+nnoremap s "_s
+nnoremap S "_S
 
 " This is the regular behavior of vim: the selected value that gets replaced is put into the register
 xnoremap <leader>p p
@@ -150,7 +154,8 @@ if has('ide')
   map <leader>e <Action>(RenameElement)
   map <leader>m <Action>(ToggleDistractionFreeMode)
   map <leader>l <Action>(MoveTabRight)
-  map <leader>h <Action>(MoveTabLeft)
+  map <leader>h <Action>(Back)
+  map <leader>, <Action>(HideAllWindows)
 
   if &ide =~? 'intellij idea'
     if &ide =~? 'community'
