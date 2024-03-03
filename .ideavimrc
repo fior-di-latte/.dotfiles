@@ -156,6 +156,8 @@ if has('ide')
   map <leader>l <Action>(MoveTabRight)
   map <leader>h <Action>(Back)
   map <leader>, <Action>(HideAllWindows)
+  map <leader>d <Action>(ActivateDartAnalysisToolWindow)
+  map <leader>4 <Action>(ActivateRunToolWindow)
 
   if &ide =~? 'intellij idea'
     if &ide =~? 'community'
