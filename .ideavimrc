@@ -6,6 +6,8 @@ set surround
 set nerdtree
 " :set showmode
 
+set visualbell
+set noerrorbells
 set clipboard=unnamedplus
 " set incsearch
 
@@ -25,12 +27,7 @@ nnoremap <leader>w f(v%oB
 " Duplicate selection
 vmap <leader>d y'>o<C-R>0<Esc>
 
-" Open Terminal
-nmap <Leader>r :action ActivateTerminalToolWindow<CR>
-nmap <Leader>h :action ShowHoverInfo<CR>
 
-"For changing keyword argument in dart
-nnoremap <leader>k _f:llv/,<cr>c
 
 "New line from normal mode"
 nnoremap <Leader>o o<Esc>0"_D
@@ -130,9 +127,10 @@ nnoremap m d
 nnoremap x "_x
 nnoremap c "_c
 nnoremap X "_X
-nnoremap C "_C
 nnoremap s "_s
 nnoremap S "_S
+xnoremap d "_d
+xnoremap dd "_dd
 
 " This is the regular behavior of vim: the selected value that gets replaced is put into the register
 xnoremap <leader>p p
@@ -145,19 +143,27 @@ if has('ide')
   nnoremap yam j:action MethodUp<cr>v0Of{%y
   nnoremap dam j:action MethodUp<cr>v0Of{%d
   nnoremap cam j:action MethodUp<cr>v0Of{%c
-  map <leader>f <Action>(GotoFile)
   map <leader>g <Action>(FindInPath)
-  map <leader>b <Action>(Switcher)
+  map <leader>b <Action>(FindUsages)
   map <leader>t <Action>(GotoNextError)
-  map <leader>s <Action>(SelectInProjectView)
+  map <leader>s <Action>(CollapseAll)<Action>(SelectInProjectView)
   map <leader>n <Action>(RenameFile)
   map <leader>e <Action>(RenameElement)
   map <leader>m <Action>(ToggleDistractionFreeMode)
   map <leader>l <Action>(MoveTabRight)
   map <leader>h <Action>(Back)
   map <leader>, <Action>(HideAllWindows)
+  map <leader>j <Action>(MethodDown)
+  map <leader>k <Action>(MethodUp)
   map <leader>d <Action>(ActivateDartAnalysisToolWindow)
   map <leader>4 <Action>(ActivateRunToolWindow)
+  map <leader>u <Action>(PrevSplitter)
+  map <leader>i <Action>(NextSplitter)
+  map <leader>z <Action>(Vcs.ShowHistoryForBlock)
+  map <leader>7 <Action>(Vcs.ShowHistoryForBlock)
+  nmap <Leader>r :action ActivateTerminalToolWindow<CR>
+  nmap <Leader>h :action ShowHoverInfo<CR>
+
 
   if &ide =~? 'intellij idea'
     if &ide =~? 'community'
